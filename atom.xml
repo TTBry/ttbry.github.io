@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>TT的个人博客</title>
+  <subtitle>Keep It Real</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://ttbry.github.io/"/>
+  <updated>2017-03-31T06:27:17.575Z</updated>
+  <id>http://ttbry.github.io/</id>
+  
+  <author>
+    <name>TT</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>About</title>
+    <link href="http://ttbry.github.io/2017/03/31/About/"/>
+    <id>http://ttbry.github.io/2017/03/31/About/</id>
+    <published>2017-03-31T05:45:31.000Z</published>
+    <updated>2017-03-31T06:27:17.575Z</updated>
+    
+    <content type="html"><![CDATA[<p>本博客主要做技术研究学习用，但并非纯技术博客，同时也会记录本人一些所思所想、生活琐事等等,培养自己写作的习惯。</p>
+<p>微博：<a href="http://weibo.com/u/3274645520/home?wvr=5" target="_blank" rel="external">TTBry</a></p>
+<p>Github: <a href="http://github.com/TTBry" target="_blank" rel="external">http://github.com/TTBry</a></p>
+<p>邮箱：turbo1993tao@gmail.com | 289735174@qq.com</p>
+<p>除非文章内特别说明，你可以转载本博客的文章，但请加入文章作者和出处。谢谢。</p>
+<hr>
+<p><img src="http://upload-images.jianshu.io/upload_images/2542851-96b190504eb49fd4.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<blockquote>
+<p>We believe that writing is about content, about what you want to say – not about fancy formatting.<br>我们坚信写作写的是内容，所思所想，而不是花样格式。<br>— Ulysses for Mac</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本博客主要做技术研究学习用，但并非纯技术博客，同时也会记录本人一些所思所想、生活琐事等等,培养自己写作的习惯。&lt;/p&gt;
+&lt;p&gt;微博：&lt;a href=&quot;http://weibo.com/u/3274645520/home?wvr=5&quot; target=&quot;_blank&quot; rel=
+    
+    </summary>
+    
+      <category term="随笔" scheme="http://ttbry.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+  </entry>
+  
+</feed>
