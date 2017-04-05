@@ -358,25 +358,15 @@
       
         
           
-            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>目前 Android 主流的几个图片加载框架有：UniversalImageLoader、Picasso、Volley和Glide等。由于 Glide 的用法简单（基本一行代码就能完成图片加载）、功能强大（能够加载GIF等），所以在这几个框架中我先选择了 Glide 进行学习。之前虽然一直有使用 UniversalImageLoader 进行项目开发，但也仅仅只是掌握了用法而已，现在想从框架源码着手更深入的学习，不再满足于简单的用法。本文主要记录 Glide 的一些基本用法，方便以后查阅和使用。本文参考CSDN人气博主郭霖的博客，原文地址：<a href="http://blog.csdn.net/guolin_blog/article/details/53759439" target="_blank" rel="external">http://blog.csdn.net/guolin_blog/article/details/53759439</a></p>
-<h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><h3 id="框架集成"><a href="#框架集成" class="headerlink" title="框架集成"></a>框架集成</h3><p>1.在 app 的 build.gradle 文件添加如下依赖：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.github.bumptech.glide:glide:3.7.0&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>2.在 AndroidManifest.xml 中声明网络权限:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</div></pre></td></tr></table></figure></p>
-<h3 id="加载图片"><a href="#加载图片" class="headerlink" title="加载图片"></a>加载图片</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">String url = &quot;http://cn.bing.com/az/hprichbg/rb/Dongdaemun_ZH-CN10736487148_1920x1080.jpg&quot;;</div><div class="line">Glide.with(this).load(url).into(imageView);</div></pre></td></tr></table></figure>
-<p>上面一行代码就完成了图片的加载过程，虽然只有一行代码，但是我们可以用这一行代码加载网络图片、本地图片和应用资源图片等。<br>其中 Glide.with() 方法用于创建一个加载图片的实例，它可接收Context, Activity, Fragment类型的参数。这里我们根据实际情况来传入相应的参数，需要注意的是 with() 方法传入的实例决定了图片加载的生命周期，如果传入的是 Activity 或 Fragment，则在 Activity 或 Fragment 被销毁的时候，Glide 就停止加载图片。如果传入的是 ApplicationContext,那只有当前应用程序销毁时，图片才会停止加载。<br>load() 方法用于加载指定图片，需要传入图片资源参数，它可以是网络图片、本地图片、应用资源、二进制流和Uri对象等，因此该方法拥有多个方法重载：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// 加载本地图片</div><div class="line">File file = new File(getExternalCacheDir() + &quot;/image.jpg&quot;);</div><div class="line">Glide.with(this).load(file).into(imageView);</div><div class="line"></div><div class="line">// 加载应用资源</div><div class="line">int resource = R.drawable.image;</div><div class="line">Glide.with(this).load(resource).into(imageView);</div><div class="line"></div><div class="line">// 加载二进制流</div><div class="line">byte[] image = getImageBytes();</div><div class="line">Glide.with(this).load(image).into(imageView);</div><div class="line"></div><div class="line">// 加载Uri对象</div><div class="line">Uri imageUri = getImageUri();</div><div class="line">Glide.with(this).load(imageUri).into(imageView);</div></pre></td></tr></table></figure></p>
-<p>into() 方法用于将加载的图片显示在指定的 ImageView 里，该方法也有其他重载方法，可以传入除 ImageView 之外其他一些类型的参数，用法十分广泛。<br>Glide加载图片总结：1.with(); 2.load(); 3.into();这三步是 Glide 最基本的使用方式。</p>
-<h3 id="占位图"><a href="#占位图" class="headerlink" title="占位图"></a>占位图</h3><p>在图片加载完成之前，布局中的 ImageView 显示一片空白，这样的用户体验是很差的，因此可以使用 Glide 的 placeholder() 方法来设置占位图，在图片完成加载之前先显示另一张提示用户图片正在加载的图片：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Glide.with(this)</div><div class="line">     .load(url)</div><div class="line">     .placeholder(R.drawable.loading)</div><div class="line">     .into(imageView);</div></pre></td></tr></table></figure></p>
-<p>placeholder() 方法传入一个占位图的资源id即可，需要注意的是，该方法需要在 load() 方法和 info() 方法之间调用，这也是 Glide 框架中其他大部分API的用法。<br>ps:Demo演示的时候由于 Glide 具有强大缓存机制，所以再次点击加载按钮的时候图片会马上加载好而没有显示占位图，所以这里可以先暂时禁用 Glide 的缓存功能：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Glide.with(this)</div><div class="line">     .load(url)</div><div class="line">     .placeholder(R.drawable.loading)</div><div class="line">     .diskCacheStrategy(DiskCacheStrategy.NONE)</div><div class="line">     .into(imageView);</div></pre></td></tr></table></figure></p>
-<p>diskCacheStrategy() 方法的作用就是禁用 Glide 的缓存功能。</p>
-<h3 id="异常占位图"><a href="#异常占位图" class="headerlink" title="异常占位图"></a>异常占位图</h3><p>因某些异常情况导致的图片无法加载的时候(如网络连接断开、图片地址失效等)，ImageView 也会显示一片空白，这时候就需要为其设置一张异常占位图，用于图片加载失败之后的图片显示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Glide.with(this)</div><div class="line">     .load(url)</div><div class="line">     .placeholder(R.drawable.loading)</div><div class="line">     .error(R.drawable.error)</div><div class="line">     .diskCacheStrategy(DiskCacheStrategy.NONE)</div><div class="line">     .into(imageView);</div></pre></td></tr></table></figure></p>
-<p>error() 方法用于设置异常占位图，同样也是传入图片的资源id。</p>
-<h3 id="指定图片格式"><a href="#指定图片格式" class="headerlink" title="指定图片格式"></a>指定图片格式</h3><p>前面已经说过，Glide 有着强大的功能，它能够加载 GIF 格式的图片，而且加载方式不需要任何其余代码，只需将图片的地址换成 GIF 的地址即可:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String url = &quot;http://p1.pstatp.com/large/166200019850062839d3&quot;; //GIF图片</div></pre></td></tr></table></figure></p>
-<p>Glide 会根据我们传入的资源自动判断其格式，并正确的解析和显示出来。我们也可以使用 asBitmap() 方法或 asGif() 方法指定图片的格式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Glide.with(this)</div><div class="line">     .load(url)</div><div class="line">     .asGif() // asBitMap()</div><div class="line">     .placeholder(R.drawable.loading)</div><div class="line">     .error(R.drawable.error)</div><div class="line">     .diskCacheStrategy(DiskCacheStrategy.NONE)</div><div class="line">     .into(imageView);</div></pre></td></tr></table></figure></p>
-<p>调用 asBitmap() 方法指定 Glide 只加载静态图片，如果这时我们传入动态图片，那 Glide 只会加载动态图的第一帧；相反，如果调用 asGif() 方法指定 Glide 只加载动态图片，如果这时传入静态图片，那结果会是加载失败，如果设置了异常占位图的话将会显示异常占位图。</p>
-<h3 id="指定图片大小"><a href="#指定图片大小" class="headerlink" title="指定图片大小"></a>指定图片大小</h3><p>Glide 的另一个强大之处在于，使用它加载图片不会造成内存浪费。什么是内存浪费？例如一张图片的尺寸是1024<em>1024，而我们界面上的ImageView的大小是200</em>200像素，这时如果不对图片进行任何压缩处理而直接将其显示在ImageView中，将会造成内存浪费。<br>Glide 会自动判断ImageView的大小，然后只将这么大的图片像素加载到内存当中，节省内存开支，即用多少加载多少。如果我们确实需要给图片指定一个固定大小，那么可以调用 override() 方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Glide.with(this)</div><div class="line">     .load(url)</div><div class="line">     .placeholder(R.drawable.loading)</div><div class="line">     .error(R.drawable.error)</div><div class="line">     .diskCacheStrategy(DiskCacheStrategy.NONE)</div><div class="line">     .override(100, 100)</div><div class="line">     .into(imageView);</div></pre></td></tr></table></figure></p>
-<p>override() 方法传入指定大小的宽度和长度，这样 Glide 就不会再去管ImageView的大小而直接按照你设定的大小来加载图片了。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>以上就是 Glide 的基本用法了，掌握了这些方法只能说是入了个门，只能说我会用了，但对这个框架的理解却还远远不够，如果想要近一步了解 Glide 框架的实现过程，那就必须要从源码的角度来解析它了，这也是我下一步的学习目标。</p>
-
-          
+          前言目前 Android 主流的几个图片加载框架有：UniversalImageLoader、Picasso、Volley和Glide等。由于 Glide 的用法简单（基本一行代码就能完成图片加载）、功能强大（能够加载GIF等），所以在这几个框架中我先选择了 Glide 进行学习。之前虽然一直有使用
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/31/安卓图片加载框架一，Glide的基本用法/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -517,18 +507,19 @@
       
         
           
-            <p>本博客主要做技术研究学习用，但并非纯技术博客，同时也会记录本人一些所思所想、生活琐事等等,培养自己写作的习惯。</p>
-<p>微博：<a href="http://weibo.com/u/3274645520/home?wvr=5" target="_blank" rel="external">TTBry</a></p>
-<p>Github: <a href="http://github.com/TTBry" target="_blank" rel="external">http://github.com/TTBry</a></p>
-<p>邮箱：turbo1993tao@gmail.com | 289735174@qq.com</p>
-<p>除非文章内特别说明，你可以转载本博客的文章，但请加入文章作者和出处。谢谢。</p>
-<hr>
-<p><img src="http://upload-images.jianshu.io/upload_images/2542851-96b190504eb49fd4.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<blockquote>
-<p>We believe that writing is about content, about what you want to say – not about fancy formatting.<br>我们坚信写作写的是内容，所思所想，而不是花样格式。<br>— Ulysses for Mac</p>
-</blockquote>
-
-          
+          本博客主要做技术研究学习用，但并非纯技术博客，同时也会记录本人一些所思所想、生活琐事等等,培养自己写作的习惯。
+微博：TTBry
+Github: http://github.com/TTBry
+邮箱：turbo1993tao@gmail.com | 289735174@qq.com
+除非文章内特别说
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/31/About/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
